@@ -123,7 +123,7 @@ function buildDatabase(rows) {
 // Returns { a: Team A edge, b: Team B edge }
 
 function calcShootingEdge(teamA, teamB) {
-    // eFG%: higher is better; eFG%D (allowed) lower is better
+    // High eFG% is good, low eFG%D is good
     return {
         a: (teamA.efg - teamB.efg) + (teamB.efgd - teamA.efgd),
         b: (teamB.efg - teamA.efg) + (teamA.efgd - teamB.efgd)
@@ -131,31 +131,31 @@ function calcShootingEdge(teamA, teamB) {
 }
 
 function calcTurnoverEdge(teamA, teamB) {
-    // TOV%: lower is better; TOV%D (forced turnovers) higher is better
+    // Low TOV% is good, high TOV%D is good
     return {
-        a: (teamA.tovd - teamA.tov) - (teamB.tovd - teamB.tov),
-        b: (teamB.tovd - teamB.tov) - (teamA.tovd - teamA.tov)
+        a: (teamA.tovd - teamA.tov),
+        b: (teamB.tovd - teamB.tov)
     };
 }
 
 function calcReboundingEdge(teamA, teamB) {
-    // ORB%: higher is better; DRB%: higher is better
+    // High ORB% is good, low DRB% is good
     return {
-        a: (teamA.orb - teamB.drb) - (teamB.orb - teamA.drb),
-        b: (teamB.orb - teamA.drb) - (teamA.orb - teamB.drb)
+        a: (teamA.orb - teamB.drb),
+        b: (teamB.orb - teamA.drb)
     };
 }
 
 function calcFreeThrowEdge(teamA, teamB) {
-    // FTr: higher is better; FTrD: lower is better
+    // High FTR is good, low FTRD is good
     return {
-        a: (teamA.ftr - teamA.ftrd) - (teamB.ftr - teamB.ftrd),
-        b: (teamB.ftr - teamB.ftrd) - (teamA.ftr - teamA.ftrd)
+        a: (teamA.ftr - teamB.ftrd),
+        b: (teamB.ftr - teamA.ftrd)
     };
 }
 
 function calcTotalEdge(edges) {
-    // Weighted sum of individual edges
+    // Weighted sum
     return {
         a: 0.4 * edges.shooting.a + 0.25 * edges.turnovers.a + 0.2 * edges.rebounding.a + 0.15 * edges.freeThrow.a,
         b: 0.4 * edges.shooting.b + 0.25 * edges.turnovers.b + 0.2 * edges.rebounding.b + 0.15 * edges.freeThrow.b
