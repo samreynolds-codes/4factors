@@ -18,21 +18,29 @@
 <body>
 <h2>Four Factors Calculator</h2>
 
-<div style="display:flex; align-items:center; gap:15px; margin-bottom:10px;">
+<div style="display:flex; align-items:flex-start; gap:20px; margin-bottom:10px;">
 
     <div>
-        <label for="teamA-search">Team A Search:</label>
-        <input type="text" id="teamA-search" placeholder="Search team...">
+        <label for="teamA-select"><strong>Team A:</strong></label>
+        <br>
+        <input type="text" id="teamA-search" placeholder="Search Team A...">
         <br>
         <select id="teamA-select"></select>
     </div>
 
     <div>
-        <label for="teamB-search">Team B Search:</label>
-        <input type="text" id="teamB-search" placeholder="Search team...">
+        <label for="teamB-select"><strong>Team B:</strong></label>
+        <br>
+        <input type="text" id="teamB-search" placeholder="Search Team B...">
         <br>
         <select id="teamB-select"></select>
     </div>
+
+    <span id="last-updated" style="margin-left:20px; font-size:14px; color:black;">
+        Last updated: April 7, 2026
+    </span>
+
+</div>
 
     <span id="last-updated" style="margin-left:20px; font-size:14px; color:black;">
         Last updated: April 7, 2026
