@@ -18,16 +18,26 @@
 <body>
 <h2>Four Factors Calculator</h2>
 
-<div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
-    <label for="teamA-select">Team A:</label>
-    <select id="teamA-select"></select>
+<div style="display:flex; align-items:center; gap:15px; margin-bottom:10px;">
 
-    <label for="teamB-select">Team B:</label>
-    <select id="teamB-select"></select>
+    <div>
+        <label for="teamA-search">Team A Search:</label>
+        <input type="text" id="teamA-search" placeholder="Search team...">
+        <br>
+        <select id="teamA-select"></select>
+    </div>
+
+    <div>
+        <label for="teamB-search">Team B Search:</label>
+        <input type="text" id="teamB-search" placeholder="Search team...">
+        <br>
+        <select id="teamB-select"></select>
+    </div>
 
     <span id="last-updated" style="margin-left:20px; font-size:14px; color:black;">
         Last updated: April 7, 2026
     </span>
+
 </div>
 
 <button id="calculate-btn">Calculate Edges</button>
@@ -612,6 +622,37 @@ Yale,55.6,51.7,14,16.3,34.2,29.7,35.1,26.8
 Youngstown St.,53.7,52.3,18.8,17.8,30.4,30.7,31.4,36
 `;
 
+// ---------- Search Function ----------    
+function addSearchFunction(searchID, selectID) {
+
+    const search = document.getElementById(searchID);
+    const select = document.getElementById(selectID);
+
+    const originalOptions = Array.from(select.options);
+
+    search.addEventListener("input", function() {
+
+        const searchTerm = this.value.toLowerCase();
+
+        select.innerHTML = "";
+
+        originalOptions
+            .filter(option =>
+                option.text.toLowerCase().includes(searchTerm)
+            )
+            .forEach(option => {
+                select.appendChild(option.cloneNode(true));
+            });
+
+        if (select.options.length > 0) {
+            select.selectedIndex = 0;
+            select.dispatchEvent(new Event("change"));
+        }
+
+    });
+
+}
+    
 // ---------- Local Initialization ----------
 function localInitialize() {
     const rows = parseCSV(embeddedCSV);
@@ -619,24 +660,33 @@ function localInitialize() {
 
     const teamASelect = document.getElementById("teamA-select");
     const teamBSelect = document.getElementById("teamB-select");
+
     teamASelect.innerHTML = "";
     teamBSelect.innerHTML = "";
+
     const teamNames = Object.keys(window.fakeDatabase).sort();
+
     teamNames.forEach(team => {
+
         const optA = document.createElement("option");
         optA.value = team;
         optA.textContent = team;
         teamASelect.appendChild(optA);
+
         const optB = document.createElement("option");
         optB.value = team;
         optB.textContent = team;
         teamBSelect.appendChild(optB);
+
     });
 
     if (teamNames.length > 1) {
         teamASelect.selectedIndex = 0;
         teamBSelect.selectedIndex = 1;
     }
+
+    addSearchFunction("teamA-search", "teamA-select");
+    addSearchFunction("teamB-search", "teamB-select");
 
     calculateEdges();
 }
